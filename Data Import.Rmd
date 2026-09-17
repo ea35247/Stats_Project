@@ -1,0 +1,57 @@
+---
+title: "Data Wrangling"
+author: "Erin Anderson"
+date: "2026-09-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+### Import the data from Excel ###
+library(readxl)
+
+data1 <- read_excel("/Users/erinanderson/Desktop/R_Work/Stats_Project/BLE_CoreProgram_EnvironmentalData.xlsx", sheet = "WaterData")
+
+### Get rid of columns I don't need ###
+library(dplyr)
+library()
+data1 <- data1 %>% select(-TOSS_mg_L, -TDN_umoles_L, -POC_d13C, -POC_uM, -PN_d15N, -PN_uM, -depth_m, -TSS_mg_L, -abs_co_250.x, -abs_co_254.x, -abs_co_350.x, -abs_co_400.x, -abs_co_412.x, -abs_co_440.x, -spec_slope_275_295, -SUVA254, -pycnocline_depth_m, -DOC_umoles_L, -POM_CNratio, -H2O_d18O, -ammonia_umol_N_L, -cond_us_cm, -DO_mg_L )
+
+
+### Select only for the open water season to avoid confounding variables ###
+data1 <- data1 %>% filter(season != "break up")
+data1 <- data1 %>% filter(season != "under ice")
+
+### Remove the few rows that do not have useful data ####
+data1 <- data1 %>% filter(lagoon != "not applicable")
+
+### Code the numeric variables as numbers ###
+data1$chl_a_ug_L <- as.numeric(data1$chl_a_ug_L)
+data1$pH <- as.numeric(data1$pH)
+data1$DO_percent <- as.numeric(data1$DO_percent)
+data1$temp_C <- as.numeric(data1$temp_C)
+data1$sal <- as.numeric(data1$sal)
+data1$phosphate_umol_P_L <-as.numeric(data1$phosphate_umol_P_L)
+data1$silicate_umol_SiO2_L <- as.numeric(data1$silicate_umol_SiO2_L)
+data1$nitrate_nitrite_umol_N_L <- as.numeric(data1$nitrate_nitrite_umol_N_L)
+
+### Remove NA values ###
+data1 <- na.omit(data1)
+
+### Check how many rows are left ###
+nrow(data1) #183
+```
+
+```{r2, include=FALSE}
+### Histogram of the response variable
+hist(data1$chl_a_ug_L)
+
+### Histogram of the numeric predictor variables ###
+hist(data1$pH)
+hist(data1$DO_percent)
+hist(data1$temp_C)
+hist(data1$sal)
+hist(data1$phosphate_umol_P_L)
+hist(data1$silicate_umol_SiO2_L)
+hist(data1$nitrate_nitrite_umol_N_L)
+```
+
