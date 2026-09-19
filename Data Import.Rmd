@@ -13,8 +13,7 @@ data1 <- read_excel("/Users/erinanderson/Desktop/R_Work/Stats_Project/BLE_CorePr
 
 ### Get rid of columns I don't need ###
 library(dplyr)
-library()
-data1 <- data1 %>% select(-TOSS_mg_L, -TDN_umoles_L, -POC_d13C, -POC_uM, -PN_d15N, -PN_uM, -depth_m, -TSS_mg_L, -abs_co_250.x, -abs_co_254.x, -abs_co_350.x, -abs_co_400.x, -abs_co_412.x, -abs_co_440.x, -spec_slope_275_295, -SUVA254, -pycnocline_depth_m, -DOC_umoles_L, -POM_CNratio, -H2O_d18O, -ammonia_umol_N_L, -cond_us_cm, -DO_mg_L )
+data1 <- data1 %>% select(-TOSS_mg_L, -TDN_umoles_L, -POC_d13C, -POC_uM, -PN_d15N, -PN_uM, -depth_m, -TSS_mg_L, -abs_co_250.x, -abs_co_254.x, -abs_co_350.x, -abs_co_400.x, -abs_co_412.x, -abs_co_440.x, -spec_slope_275_295, -SUVA254, -pycnocline_depth_m, -DOC_umoles_L, -POM_CNratio, -H2O_d18O, -ammonia_umol_N_L, -cond_us_cm, -DO_mg_L, -sp_cond_us_cm )
 
 
 ### Select only for the open water season to avoid confounding variables ###
@@ -38,7 +37,10 @@ data1$nitrate_nitrite_umol_N_L <- as.numeric(data1$nitrate_nitrite_umol_N_L)
 data1 <- na.omit(data1)
 
 ### Check how many rows are left ###
-nrow(data1) #183
+nrow(data1) #120
+```
+```{r heading, include = TRUE}
+head(data1)
 ```
 
 ```{r2, include=FALSE}
