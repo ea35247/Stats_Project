@@ -41,6 +41,8 @@ nrow(data1) #120
 ```
 ```{r heading, include = TRUE}
 head(data1)
+
+write.csv(data1, "data1.csv", row.names = FALSE)
 ```
 
 ```{r2, include=FALSE}
@@ -57,3 +59,47 @@ hist(data1$silicate_umol_SiO2_L)
 hist(data1$nitrate_nitrite_umol_N_L)
 ```
 
+```{r 3, include=FALSE}
+library(ggplot2)
+p <- ggplot(data1, aes(x = DO_percent, y = chl_a_ug_L)) +
+    geom_point() +
+    theme_minimal()
+
+p <- ggplot(data1, aes(x = pH, y = chl_a_ug_L)) +
+    geom_point() +
+    theme_minimal()  
+
+p <- ggplot(data1, aes(x = temp_C, y = chl_a_ug_L)) +
+    geom_point() +
+    theme_minimal() 
+
+
+scatter_plots <- function(data1, y, x_vars) {
+  plots <- lapply(x_vars, function(x) {
+    ggplot(data1, aes(x = .data[[x]], y = .data[[y]])) +
+      geom_point() +
+      labs(x = x, y = y) +
+      theme_classic()
+  })
+
+  names(plots) <- x_vars
+  plots
+}
+
+plots <- scatter_plots(
+  data = data1,
+  y = "chl_a_ug_L",
+  x_vars = c("pH", "DO_percent", "temp_C", "sal", "phosphate_umol_P_L", "silicate_umol_SiO2_L", "nitrate_nitrite_umol_N_L")
+)
+
+plots <- patchwork::wrap_plots(plots)
+
+ggsave("scatter_plots.png",
+  plots,
+  width = 10,
+  height = 12,  
+  dpi = 150,
+  bg = "white"
+)
+browseURL("scatter_plots.png")
+```
